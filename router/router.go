@@ -10,7 +10,9 @@ import (
 func NewRouter() *mux.Router {
 	fs := http.FileServer(http.Dir("./public/"))
 	r := mux.NewRouter()
-	r.HandleFunc("/", UserController.HomePage).Methods("GET")
-	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", fs))
+	api := r.PathPrefix("/api/v1").Subrouter()
+
+	api.HandleFunc("/", UserController.HomePage).Methods("GET")
+	api.PathPrefix("/public/").Handler(http.StripPrefix("/public/", fs))
 	return r
 }
