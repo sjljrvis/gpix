@@ -4,13 +4,11 @@ import (
 	helper "github.com/sjljrvis/gpix/helper"
 	model "github.com/sjljrvis/gpix/models/user"
 	tools "github.com/sjljrvis/gpix/tools"
-	"log"
 	"net/http"
 )
 
 // HomePage controller
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	log.Print(tools.MongoDB)
 	var results []model.User
 	err := tools.MongoDB.C("user").Find(nil).All(&results)
 	if err != nil {
