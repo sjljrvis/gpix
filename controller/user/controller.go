@@ -2,15 +2,14 @@ package controller
 
 import (
 	helper "github.com/sjljrvis/gpix/helper"
-	model "github.com/sjljrvis/gpix/models/user"
-	tools "github.com/sjljrvis/gpix/tools"
+	UserModel "github.com/sjljrvis/gpix/models/user"
 	"net/http"
 )
 
 // HomePage controller
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	var results []model.User
-	err := tools.MongoDB.C("user").Find(nil).All(&results)
+	var results []UserModel.User
+	results, err := UserModel.FindAll()
 	if err != nil {
 		helper.RespondWithError(w, 200, "error in mongoDB ") // TODO: Do something about the error
 	} else {
