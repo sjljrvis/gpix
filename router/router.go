@@ -20,6 +20,7 @@ func NewRouter() *mux.Router {
 	userRouter.HandleFunc("/", UserController.GetAll).Methods("GET")
 	userRouter.HandleFunc("/{id}", UserController.GetOne).Methods("GET")
 	userRouter.HandleFunc("/", UserController.Create).Methods("POST")
+	userRouter.HandleFunc("/search/", UserController.Search).Methods("GET")
 
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", fs))
 	return r

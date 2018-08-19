@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	Helper "github.com/sjljrvis/gpix/helper"
 	UserModel "github.com/sjljrvis/gpix/models/user"
@@ -50,8 +49,22 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// SearchUser controller
-func SearchUser() {
-	_err := UserModel.FindByQuery(map[string]interface{}{"userName": "jarvis"})
-	fmt.Println("---------", _err, "--------------")
+// Search controller
+func Search(w http.ResponseWriter, r *http.Request) {
+
+	var query map[string]interface{}
+	query = make(map[string]interface{})
+
+	keys := r.URL.Query()
+
+	for item := range keys {
+		query[item] = keys[item][0]
+	}
+
+	result, err := UserModel.FindByQuery(query)
+	if err != nil {
+		Helper.RespondWithError(w, 200, err.Error()) // TODO: Do something about the error
+	} else {
+		Helper.RespondWithJSON(w, 200, result)
+	}
 }
