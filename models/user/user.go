@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	tools "github.com/sjljrvis/gpix/tools"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -48,6 +47,5 @@ FindByQuery runs query based on query  and returns array of document from collec
 func FindByQuery(query map[string]interface{}) ([]User, error) {
 	var results []User
 	err := tools.MongoDB.C(collection).Find(query).All(&results)
-	fmt.Print(results)
 	return results, err
 }
