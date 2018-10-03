@@ -1,8 +1,10 @@
 package main
 
 import (
+	"github.com/gorilla/handlers"
 	. "github.com/sjljrvis/gpix/logger"
 	router "github.com/sjljrvis/gpix/router"
+	socket "github.com/sjljrvis/gpix/sockets"
 	tools "github.com/sjljrvis/gpix/tools"
 	"github.com/subosito/gotenv"
 	"net/http"
@@ -18,6 +20,14 @@ func init() {
 
 func main() {
 	r := router.NewRouter()
-	http.Handle("/", r)
+	hub := socket.NewHub()
+	go hub.Run()
+
+	corsObj := handlers.AllowedOrigins([]string{"*"})
+
+	http.Handle("/", handlers.CORS(corsObj)(r))
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		socket.ServeWs(hub, w, r)
+	})
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
