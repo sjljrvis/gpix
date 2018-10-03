@@ -12,6 +12,7 @@ dev : clean
 	go run main.go
 	
 clean:
+	clear
 	@echo "\n -> Cleaning cache and log files\n" 
 	-find . -name 'nohup.out' -delete
 	@echo "\n -> Cleaning done\n"
