@@ -2,7 +2,10 @@ package router
 
 import (
 	"github.com/gorilla/mux"
+
+	BillController "github.com/sjljrvis/gpix/controller/bill"
 	UserController "github.com/sjljrvis/gpix/controller/user"
+
 	"net/http"
 )
 
@@ -21,6 +24,17 @@ func NewRouter() *mux.Router {
 	userRouter.HandleFunc("/{id}", UserController.GetOne).Methods("GET")
 	userRouter.HandleFunc("/", UserController.Create).Methods("POST")
 	userRouter.HandleFunc("/search/", UserController.Search).Methods("GET")
+
+	/*
+		bill subrouter
+		handle  REST-api /user here
+	*/
+
+	billsRouter := r.PathPrefix("/api/v1/bill").Subrouter()
+	billsRouter.HandleFunc("/", BillController.GetAll).Methods("GET")
+	billsRouter.HandleFunc("/{id}", BillController.GetOne).Methods("GET")
+	billsRouter.HandleFunc("/", BillController.Create).Methods("POST")
+	billsRouter.HandleFunc("/search/", BillController.Search).Methods("GET")
 
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", fs))
 	return r
