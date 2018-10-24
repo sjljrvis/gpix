@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/mux"
 
 	BillController "github.com/sjljrvis/gpix/controller/bill"
+	OauthController "github.com/sjljrvis/gpix/controller/oauth"
 	UserController "github.com/sjljrvis/gpix/controller/user"
 
 	"net/http"
@@ -35,6 +36,11 @@ func NewRouter() *mux.Router {
 	billsRouter.HandleFunc("/{id}", BillController.GetOne).Methods("GET")
 	billsRouter.HandleFunc("/", BillController.Create).Methods("POST")
 	billsRouter.HandleFunc("/search/", BillController.Search).Methods("GET")
+
+	oauthRouter := r.PathPrefix("/api/v1/oauth").Subrouter()
+	oauthRouter.HandleFunc("/", OauthController.OauthHandler).Methods("GET")
+	oauthRouter.HandleFunc("/google/login", OauthController.GloginHandler).Methods("GET")
+	oauthRouter.HandleFunc("/google/callback", OauthController.GcallbackHandler).Methods("GET")
 
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", fs))
 	return r
